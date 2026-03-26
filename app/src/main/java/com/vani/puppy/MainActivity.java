@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialToolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private RecyclerViewFragment recyclerViewFragment;
+    private PerfilMascotaFragment perfilMascotaFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,25 +40,38 @@ public class MainActivity extends AppCompatActivity {
         setUpViewPager();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_opciones, menu);
+        return true;
+    }
+
     // 🔹 ViewPager + Fragments
     private void setUpViewPager() {
         ArrayList<Fragment> fragments = new ArrayList<>();
 
-        fragments.add(new RecyclerViewFragment()); // Inicio
-        fragments.add(new PerfilMascotaFragment()); // Perfil
+        recyclerViewFragment = new RecyclerViewFragment();
+        perfilMascotaFragment = new PerfilMascotaFragment();
+
+        fragments.add(recyclerViewFragment);
+        fragments.add(perfilMascotaFragment);
 
         viewPager.setAdapter(new PageAdapter(getSupportFragmentManager(), fragments));
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.getTabAt(0).setText("Inicio");
         tabLayout.getTabAt(1).setText("Perfil");
-    }
 
-    // 🔹 Menú (3 puntitos)
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_opciones, menu);
-        return true;
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                if (position == 1 && perfilMascotaFragment != null) {
+                    perfilMascotaFragment.cargarPerfilYFotos();
+                }
+            }
+        });
     }
 
     // 🔹 Acciones del menú

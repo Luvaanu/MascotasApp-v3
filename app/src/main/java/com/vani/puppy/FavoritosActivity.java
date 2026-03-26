@@ -31,18 +31,10 @@ public class FavoritosActivity extends AppCompatActivity {
         rvFavoritos = findViewById(R.id.rvFavoritos);
         rvFavoritos.setLayoutManager(new LinearLayoutManager(this));
 
-        inicializarListaFavoritas();
+        ConstructorMascotas constructor = new ConstructorMascotas(this);
+        favoritas = constructor.obtenerTopMascotas();
+
         inicializarAdapter();
-    }
-
-    private void inicializarListaFavoritas() {
-        favoritas = new ArrayList<>();
-
-        favoritas.add(new Mascota(R.drawable.mascota1, "Koda", 5));
-        favoritas.add(new Mascota(R.drawable.mascota2, "Milo", 4));
-        favoritas.add(new Mascota(R.drawable.mascota3, "Luna", 3));
-        favoritas.add(new Mascota(R.drawable.mascota4, "Simba", 2));
-        favoritas.add(new Mascota(R.drawable.mascota5, "Nala", 1));
     }
 
     private void inicializarAdapter() {

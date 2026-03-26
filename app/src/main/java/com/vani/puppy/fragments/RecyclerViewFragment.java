@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.vani.puppy.ConstructorMascotas;
 import com.vani.puppy.Mascota;
 import com.vani.puppy.MascotaAdapter;
 import com.vani.puppy.R;
@@ -33,25 +34,30 @@ public class RecyclerViewFragment extends Fragment {
         rvMascotas = v.findViewById(R.id.rvMascotas);
         rvMascotas.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        inicializarListaMascotas();
-        inicializarAdapter();
+        mascotas = new ArrayList<>();
+        adapter = new MascotaAdapter(mascotas);
+        rvMascotas.setAdapter(adapter);
+
+        cargarMascotas();
 
         return v;
     }
 
-    private void inicializarListaMascotas() {
-        mascotas = new ArrayList<>();
-
-        mascotas.add(new Mascota(R.drawable.mascota1, "Koda", 5));
-        mascotas.add(new Mascota(R.drawable.mascota2, "Milo", 4));
-        mascotas.add(new Mascota(R.drawable.mascota3, "Luna", 3));
-        mascotas.add(new Mascota(R.drawable.mascota4, "Simba", 2));
-        mascotas.add(new Mascota(R.drawable.mascota5, "Nala", 1));
-        mascotas.add(new Mascota(R.drawable.mascota6, "Ronny", 3));
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarMascotas();
     }
 
-    private void inicializarAdapter() {
-        adapter = new MascotaAdapter(mascotas);
-        rvMascotas.setAdapter(adapter);
+    private void cargarMascotas() {
+        if (getActivity() == null) return;
+
+        ConstructorMascotas constructor = new ConstructorMascotas(getActivity());
+        constructor.insertarMascotasIniciales();
+
+        mascotas.clear();
+        mascotas.addAll(constructor.obtenerMascotas());
+
+        adapter.notifyDataSetChanged();
     }
 }

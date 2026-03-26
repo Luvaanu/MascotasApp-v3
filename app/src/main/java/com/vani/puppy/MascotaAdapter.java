@@ -34,13 +34,13 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
         holder.tvRating.setText(String.valueOf(mascota.getRating()));
 
         // Click en hueso blanco → suma rating
-        holder.imgHuesoBlanco.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int nuevoRating = mascota.getRating() + 1;
-                mascota.setRating(nuevoRating);
-                holder.tvRating.setText(String.valueOf(nuevoRating));
-            }
+        holder.imgHuesoBlanco.setOnClickListener(v -> {
+            int nuevoRating = mascota.getRating() + 1;
+            mascota.setRating(nuevoRating);
+            holder.tvRating.setText(String.valueOf(nuevoRating));
+
+            ConstructorMascotas constructor = new ConstructorMascotas(v.getContext());
+            constructor.guardarMascotaConRating(mascota);
         });
     }
 
